@@ -41,7 +41,7 @@ export default function NotesLandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-pink-100 relative overflow-hidden">
-      {/* Animated Background Elements */}
+      
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-200 to-pink-200 rounded-full opacity-60 animate-pulse"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-blue-200 to-cyan-200 rounded-full opacity-50 animate-bounce"></div>
@@ -49,7 +49,6 @@ export default function NotesLandingPage() {
         <div className="absolute bottom-20 right-32 w-36 h-36 bg-gradient-to-br from-yellow-200 to-orange-200 rounded-full opacity-30 animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
-      {/* Mouse Follower Effect */}
       <div 
         className="fixed w-6 h-6 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-50 pointer-events-none z-50 transition-transform duration-100 ease-out"
         style={{
@@ -59,7 +58,6 @@ export default function NotesLandingPage() {
         }}
       ></div>
 
-      {/* Navigation */}
       <nav className="fixed w-full top-0 z-40 bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -75,7 +73,9 @@ export default function NotesLandingPage() {
               <a href="#features" className="text-slate-700 hover:text-purple-600 transition-all duration-300 font-medium hover:scale-105">Features</a>
               <a href="#about" className="text-slate-700 hover:text-purple-600 transition-all duration-300 font-medium hover:scale-105">About</a>
               <a href="#contact" className="text-slate-700 hover:text-purple-600 transition-all duration-300 font-medium hover:scale-105">Contact</a>
-              <button className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white px-8 py-3 rounded-2xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 group overflow-hidden">
+              <button 
+              onClick={() => navigate("/signup")}
+              className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white px-8 py-3 rounded-2xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 group overflow-hidden">
                 <span className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                 <span 
                 onClick={() => navigate("/signup")}
@@ -170,11 +170,10 @@ export default function NotesLandingPage() {
                 </div>
               </FloatingElement>
 
-              {/* Main App Mockup */}
               <div className="relative">
                 <div className="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl p-8 transform hover:scale-105 transition-all duration-500 border border-white/50">
                   <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-8 min-h-96 relative overflow-hidden">
-                    {/* App Header */}
+                    
                     <div className="flex items-center justify-between mb-8">
                       <div className="flex space-x-3">
                         <div className="w-4 h-4 bg-red-400 rounded-full animate-pulse"></div>
@@ -186,7 +185,6 @@ export default function NotesLandingPage() {
                       </div>
                     </div>
                     
-                    {/* Notes Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="group bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-purple-100">
                         <div className="flex items-center justify-between mb-3">
@@ -243,7 +241,6 @@ export default function NotesLandingPage() {
         </div>
       </section>
 
-      {/* Features Section */}
       <section id="features" className="py-24 bg-gradient-to-r from-white to-slate-50 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
@@ -308,7 +305,6 @@ export default function NotesLandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-24 bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="absolute top-0 left-0 w-full h-full">

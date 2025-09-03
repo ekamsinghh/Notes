@@ -1,10 +1,30 @@
 import User, { IUser } from "../models/User";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
+import dotenv from 'dotenv';
+dotenv.config();
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,            // or 587 if 465 fails
+  secure: true,         // true for 465, false for 587
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+transporter.verify((error, success) => {
+  if (error) {
+    console.error("SMTP connection failed:", error);
+  } else {
+    console.log("✅ Server is ready to send emails");
+  }
+});
+
+
+
 class UserRepository{
-    comparePassword(password: string, userPassword: string): boolean {
-        return bcrypt.compareSync(password, userPassword);
-    }
 
     generateToken(user: IUser): string {
         const payload = {
@@ -14,40 +34,66 @@ class UserRepository{
         return jwt.sign(payload, process.env.JWT_SECRET as string);
     }
 
+     generateOTP(){
+        return crypto.randomInt(100000, 999999).toString();
+    }
+
+
     async createUser(data: Partial<IUser>){
         try{
             const checkUser = await User.findOne({ email: data.email });
             if(checkUser){
                 throw new Error("User already exists");
             }
-            const user = await User.create(data);
-            return {
+
+            const otp = this.generateOTP();
+            const otpExpiry = new Date(Date.now() + 10*60*1000);//10 minutes
+
+            
+            const user = await User.create({
                 ...data,
-                token: this.generateToken(user)
-            };
+                otp,
+                otpExpiry
+            });
+
+            await transporter.sendMail({
+                from: process.env.EMAIL,
+                to: data.email,
+                subject: "Verify your email",
+                text: `Your OTP is ${otp}. It is valid for 10 minutes.`
+            });
+
+            return {...data};
         }
         catch(err){
             throw err;
         }
     }
 
-    async findUser(email:string,password:string){
+    async findUser(email:string){
         try{
             const user = await User.findOne({
                 email: email
             });
+
             if(!user){
                 throw new Error("User does not exist");
             }
 
-            if(user && this.comparePassword(password,user.password)){
-                return {
-                    token: this.generateToken(user)
-                };
-            }
-            else{
-                throw new Error("Incorrect Password");
-            }
+            const otp = this.generateOTP();
+            const otpExpiry = new Date(Date.now() + 10*60*1000);
+
+            user.otp = otp;
+            user.otpExpiry = otpExpiry;
+            await user.save();
+            await transporter.sendMail({
+                from: process.env.EMAIL,
+                to: email,
+                subject: "Verify your email",
+                text: `Your OTP is ${otp}. It is valid for 10 minutes.`
+            });
+
+            return user;
         }
         catch(err){
             throw err;

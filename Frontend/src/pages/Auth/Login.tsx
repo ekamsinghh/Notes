@@ -21,15 +21,12 @@ const SigninPage: React.FC = () => {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-white">
-      {/* Left Column */}
       <div className="flex flex-col flex-1 p-6 md:p-10 overflow-y-auto">
-        {/* Logo */}
         <div className="flex items-center gap-3 mb-8">
           <img src={logo} alt="logo" className="w-10 h-10 object-contain" />
-          <div className="font-semibold text-lg tracking-tight">HD</div>
+          <div className="font-semibold text-lg tracking-tight">Notes App</div>
         </div>
 
-        {/* Content */}
         <div className="flex flex-col flex-1 justify-center px-4 md:px-12 lg:px-16 gap-8">
           <div className="flex flex-col gap-3 text-left">
             <b className="text-3xl md:text-4xl tracking-tight">
@@ -42,7 +39,6 @@ const SigninPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Form */}
           <div className="flex flex-col gap-5 max-w-sm w-full">
             {step === "email" ? (
               <>
@@ -105,10 +101,11 @@ const SigninPage: React.FC = () => {
             <div className="text-gray-500 text-xs md:text-sm">
               Don’t have an account?{" "}
               <span
-              onClick={()=>{
-                navigate("/signup")
-              }}
-               className="text-blue-600 font-semibold underline cursor-pointer">
+                onClick={() => {
+                  navigate("/signup");
+                }}
+                className="text-blue-600 font-semibold underline cursor-pointer"
+              >
                 Sign up
               </span>
             </div>
@@ -116,12 +113,11 @@ const SigninPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Right Column (Full Cover) */}
-      <div className="hidden md:flex flex-1">
+      <div className="hidden md:flex flex-1 p-2">
         <img
           src={rightcolumn}
           alt="illustration"
-          className="relative right-[-2%] w-full h-full object-cover"
+          className="w-full h-full object-cover rounded-3xl shadow-lg"
         />
       </div>
     </div>
