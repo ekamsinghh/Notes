@@ -27,11 +27,11 @@ npm install
 
 ### .env file to setup in backend folder
 
-PORT=3000
-DB_URL=your_mongo_connection_string
-JWT_SECRET=your_secret_key
-EMAIL=your_gmail_address
-EMAIL_PASS=your_app_password   # generate from Google App Passwords
+- PORT=3000
+- DB_URL=your_mongo_connection_string
+- JWT_SECRET=your_secret_key
+- EMAIL=your_gmail_address
+- EMAIL_PASS=your_app_password   # generate from Google - App Passwords
 
 ### Run Backend
 ```bash
@@ -64,8 +64,8 @@ http://localhost:3000/api
 | Method | Endpoint       | Description                |
 | ------ | -------------- | -------------------------- |
 | POST   | `/register`    | Register a new user        |
-| POST   | `/login`       | Login user (returns token) |
-| POST   | `/verify-otp`  | Verify OTP sent to email   |
+| POST   | `/login`       | Login user                 |
+| POST   | `/verify-otp`  | OTP Verification + token   |
 | GET    | `/auth/me/:id` | Get current user details   |
 
 
