@@ -1,4 +1,4 @@
-export const BASE_URL = "https://notes-production-e0fa.up.railway.app/api";
+export const BASE_URL = "https://notes-m9if.onrender.com/api";
 
 export const API_PATHS = {
     LOGIN: `${BASE_URL}/login`,
