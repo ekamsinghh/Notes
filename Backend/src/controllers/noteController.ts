@@ -102,7 +102,6 @@ export const getNotesByUser = async (req: Request, res: Response) => {
       data: notes,
     });
   } catch (err) {
-    console.error("Error fetching notes:", err);
     return res.status(500).json({
       success: false,
       error: err instanceof Error ? err.message : "Something went wrong",

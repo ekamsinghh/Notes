@@ -57,6 +57,7 @@ export const verifyOTP = async (req:Request,res:Response) => {
         return res.status(200).json({
             success: true,
             message: "Email verified successfully",
+            user: user,
             token: userRepo.generateToken(user)
         });
     }
@@ -90,6 +91,25 @@ export const login = async (req:Request,res:Response) => {
                 });
             }
         }
+        return res.status(500).json({
+            success: false,
+            error: err
+        });
+    }
+}
+
+export const getCurrentUser = async (req:Request, res:Response) => {
+    try{
+        const { id }= req.params;
+        const user = await userRepo.findUserById(id);
+        if(user){
+            return res.status(200).json({
+                success: true,
+                data: user
+            });
+        }
+    }
+    catch(err){
         return res.status(500).json({
             success: false,
             error: err

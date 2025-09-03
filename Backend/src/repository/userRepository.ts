@@ -99,6 +99,16 @@ class UserRepository{
             throw err;
         }
     }
+
+    async findUserById(userId:string){
+        try{
+            const user = await User.findById(userId).select("-otp -otpExpiry -__v");
+            return user;
+        }
+        catch(err){
+            throw err;
+        }
+    }
 }
 
 export default UserRepository;

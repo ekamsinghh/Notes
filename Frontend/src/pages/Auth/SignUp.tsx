@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import rightcolumn from "../../assets/rightcolumn.png";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 
 const SignupPage: React.FC = () => {
   const [name, setName] = useState("");
@@ -9,18 +11,75 @@ const SignupPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState<"details" | "otp">("details");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
   const navigate = useNavigate();
 
   const allFieldsFilled =
     name.trim() !== "" && dob.trim() !== "" && email.trim() !== "";
 
-  const handleGetOtp = () => {
-    if (allFieldsFilled) setStep("otp");
+  const handleGetOtp = async () => {
+    if (!allFieldsFilled) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+      setMessage(null);
+
+      const response = await axiosInstance.post(API_PATHS.REGISTER, {
+        name,
+        dob,
+        email,
+      });
+
+      if (response.status === 200) {
+        setMessage("✅ OTP sent to your email!");
+        setStep("otp");
+      }
+    } catch (err: any) {
+      if (err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSignUp = () => {
-    if (otp.trim() !== "") {
-      alert("✅ Signed up successfully!");
+  const handleSignUp = async () => {
+    if (otp.trim() === "") return;
+
+    try {
+      setLoading(true);
+      setError(null);
+      setMessage(null);
+
+      const response = await axiosInstance.post(API_PATHS.VERIFY_OTP, {
+        email,
+        otp,
+      });
+
+      if (response.status === 200) {
+        setMessage("🎉 Signed up successfully!");
+        if (response.data?.token) {
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("userId", response.data.user._id);
+        }
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1200);
+      }
+    } catch (err: any) {
+      if (err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError("Invalid OTP or server error. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,6 +106,17 @@ const SignupPage: React.FC = () => {
                   : "Enter the OTP sent to your email"}
               </p>
             </div>
+
+            {error && (
+              <div className="text-red-500 text-sm bg-red-100 p-2 rounded">
+                {error}
+              </div>
+            )}
+            {message && (
+              <div className="text-green-600 text-sm bg-green-100 p-2 rounded">
+                {message}
+              </div>
+            )}
 
             <div className="flex flex-col gap-5 w-full">
               {step === "details" ? (
@@ -91,14 +161,14 @@ const SignupPage: React.FC = () => {
 
                   <button
                     onClick={handleGetOtp}
-                    disabled={!allFieldsFilled}
+                    disabled={!allFieldsFilled || loading}
                     className={`w-full rounded-lg py-3 font-semibold text-white ${
-                      allFieldsFilled
+                      allFieldsFilled && !loading
                         ? "bg-blue-600 hover:bg-blue-700"
                         : "bg-blue-300 cursor-not-allowed"
                     }`}
                   >
-                    Get OTP
+                    {loading ? "Sending OTP..." : "Get OTP"}
                   </button>
                 </>
               ) : (
@@ -118,19 +188,18 @@ const SignupPage: React.FC = () => {
 
                   <button
                     onClick={handleSignUp}
-                    disabled={otp.trim() === ""}
+                    disabled={otp.trim() === "" || loading}
                     className={`w-full rounded-lg py-3 font-semibold text-white ${
-                      otp.trim() !== ""
+                      otp.trim() !== "" && !loading
                         ? "bg-blue-600 hover:bg-blue-700"
                         : "bg-blue-300 cursor-not-allowed"
                     }`}
                   >
-                    Sign Up
+                    {loading ? "Verifying..." : "Sign Up"}
                   </button>
                 </>
               )}
             </div>
-
             {step === "details" && (
               <div className="text-gray-500 text-xs md:text-sm">
                 Already have an account?{" "}
