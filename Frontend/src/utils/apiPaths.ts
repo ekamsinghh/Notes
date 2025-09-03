@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:3000/api";
+export const BASE_URL = "https://notes-production-e0fa.up.railway.app/api";
 
 export const API_PATHS = {
     LOGIN: `${BASE_URL}/login`,
