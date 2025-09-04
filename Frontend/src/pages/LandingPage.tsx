@@ -129,10 +129,11 @@ export default function NotesLandingPage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-              <button className="group relative bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white px-12 py-5 rounded-3xl text-xl font-bold shadow-2xl hover:shadow-purple-500/25 transition-all duration-500 transform hover:scale-110 overflow-hidden">
+              <button
+              onClick={() => navigate("/signup")}
+               className="group relative bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white px-12 py-5 rounded-3xl text-xl font-bold shadow-2xl hover:shadow-purple-500/25 transition-all duration-500 transform hover:scale-110 overflow-hidden">
                 <span className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
                 <span 
-                onClick={() => navigate("/signup")}
                 className="relative flex items-center justify-center">
                   <Zap className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
                   Get Started
